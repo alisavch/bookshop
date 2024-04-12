@@ -1,0 +1,129 @@
+.header {
+    position: relative;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background-color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-name {
+    color: white;
+    font-weight: bold;
+    margin-left: 50px;
+}
+
+.header-cart {
+    margin-right: 12%;
+}
+
+.header-cart button {
+    color: black;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.items {
+    position: relative;
+    z-index: 1;
+    float: left;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.main-title {
+    text-align: left;
+    font-size: 1.5em;
+    margin: 10px 0px 10px 20px;
+}
+
+.main-container {
+    transition: margin-left 0.5s ease;
+}
+
+.cart-expanded .main-container {
+    margin-right: 25%;
+}
+
+.cart {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 25%;
+    margin-top: 70px;
+    padding: 10px;
+}
+
+.item {
+    display: flex;
+}
+
+.item-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin: 0px 30px 0px 15px;
+    text-align: left;
+}
+
+.item img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.item:hover {
+    transition: 0.2s ease-in;
+    cursor: pointer;
+}
+
+.item-in-cart {
+    width: 100%;
+    border: 1px solid black;
+    padding: 10px;
+    margin: 5px;
+    position: relative;
+    font-size: 0.8em;
+}
+
+.item-title {
+    font-weight: bold;
+}
+
+.item-quantity {
+    margin-top: 5px;
+}
+
+.removeFromCartBttn {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    border: none;
+    background-color: transparent;
+}
+
+.addToCartBttn {
+    display: block;
+    padding: 10px 20px;
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 20px;
+    background-color: white;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.error-message {
+    color: red;
+}
+
