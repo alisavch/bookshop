@@ -4,7 +4,7 @@ import Item from './Item'
 
 const BASE_URL = process.env.REACT_APP_BACKEND_URL;
 
-function Main () {
+function Shop () {
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -40,4 +40,4 @@ function Main () {
     </div>)
 }
 
-export default Main;
+export default Shop;

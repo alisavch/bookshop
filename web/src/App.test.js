@@ -1,10 +1,10 @@
 import { render, fireEvent } from '@testing-library/react';
 import App from './App';
-import { getCartItemCount } from './utils/localStorage';
+// import { getCartItemCount, getCartItems } from './utils/localStorage';
 
-jest.mock('./utils/localStorage', () => ({
-  getCartItemCount: jest.fn(),
-}));
+// jest.mock('./utils/localStorage', () => ({
+//   getCartItemCount: jest.fn(),
+// }));
 
 describe('App component', () => {
   beforeEach(() => {
@@ -36,5 +36,20 @@ describe('App component', () => {
     const { getByText } = render(<App />);
     expect(getByText('ScyllaDB Bookshop')).toBeInTheDocument();
     expect(getByText('2')).toBeInTheDocument();
+  });
+});
+
+describe('getCartItemCount', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  test('should return correct number of items in cart', () => {
+    localStorage.setItem('cartItems', JSON.stringify([{ id: 1 }, { id: 2 }]));
+    expect(getCartItemCount()).toBe(2);
+  });
+
+  test('should return 0 when cart is empty', () => {
+    expect(getCartItemCount()).toBe(0);
   });
 });
