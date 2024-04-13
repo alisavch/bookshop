@@ -16,7 +16,7 @@ function Main () {
         try {
             const resp = await fetch(`${BASE_URL}/books`);
             const data = await resp.json();
-            setItems(data)
+            setItems(data);
             setLoading(false);
         } catch (error) {
             console.error('Error fetching items:', error);

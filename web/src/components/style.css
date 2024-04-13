@@ -1,5 +1,5 @@
 .header {
-    position: relative;
+    position: fixed;
     z-index: 2;
     top: 0;
     left: 0;
@@ -46,7 +46,9 @@
 }
 
 .main-container {
+    text-align: center;
     transition: margin-left 0.5s ease;
+    margin: 70px 10px 0px 10px;
 }
 
 .cart-expanded .main-container {
@@ -54,7 +56,7 @@
 }
 
 .cart {
-    position: absolute;
+    position: fixed;
     top: 0;
     right: 0;
     width: 25%;
@@ -76,7 +78,7 @@
 }
 
 .item img {
-    width: 200px;
+    width: 120px;
     height: 200px;
     object-fit: cover;
     object-position: center;
@@ -123,10 +125,13 @@
 }
 
 button.clicked {
-    background-color: rgb(238, 201, 241);
+    background-color: rgb(157, 33, 163);
   }
+
+button:active:hover {
+    background-color: rgb(124, 117, 124);
+}
 
 .error-message {
     color: red;
 }
-

@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react"
-import './App.css';
+import React, { useState } from "react"
 import Header from "./components/Header"
 import Main from "./components/Shop"
 import Cart from "./components/Cart"
@@ -19,9 +18,9 @@ function App() {
     <div className="App">
         <Header appName={appName} toggleCart={toggleCart} cartItemsCount={cartItemCount} />
         <main>
-        <div className={`main-container ${showCart ? 'cart-expanded' : ''}`}>
+        <div className={`main-container ${showCart && cartItemCount > 0 ? 'cart-expanded' : ''}`}>
           <Main/>
-          {showCart && <Cart/>}
+          {showCart && cartItemCount > 0 && <Cart/>}
         </div>
       </main>
     </div>

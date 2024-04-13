@@ -1,7 +1,8 @@
 export function addItemToCart(item) {
     const existingCart = JSON.parse(localStorage.getItem('cartItems')) || [];
-    const itemExists = existingCart.some(cartItem => cartItem.id === item.id);
-    if (!itemExists) {
+    const itemExists = existingCart.some(cartItem => (cartItem.id === item.id));
+
+    if (!itemExists && !(item.saleInfo.listPrice.amount === 0)) {
         const updatedCart = [...existingCart, item];
         item.qty += 1;
         localStorage.setItem('cartItems', JSON.stringify(updatedCart));
@@ -14,7 +15,6 @@ export function getCartItemCount() {
 }
 
 export function getCartItems() {
-    const existingCart = JSON.parse(localStorage.getItem('cartItems')) || [];
     return JSON.parse(localStorage.getItem('cartItems')) || [];
 }
 
@@ -24,9 +24,8 @@ export function getCartTotalAmount() {
     let currency = '';
     cart.forEach(item => {
         totalAmount += (item.saleInfo.listPrice.amount * 100) * item.qty / 100;
-        currency = item.saleInfo.listPrice.currencyCode
     })
-    return <p>{totalAmount} {currency}</p>;
+    return totalAmount
 }
 
 export function updateCartItemQty(itemId, qty) {
@@ -45,8 +44,4 @@ export function removeCartItem(itemId) {
         cart.splice(itemIndex, 1);
     }
     localStorage.setItem('cartItems', JSON.stringify(cart));
-}
-
-export function updatePage() {
-    const existingCart = JSON.parse(localStorage.getItem('cartItems')) || [];
 }

@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from "react";
 import "./style.css"
-import { addItemToCart, updateCartItemQty, removeCartItem } from '../utils/localStorage';
+import { addItemToCart, updateCartItemQty, removeCartItem, getCartItemCount } from '../utils/localStorage';
 
 function Item ({item, inCart}) {
-    const [cartItems, setCartItems] = useState([]);
     const [quantity, setQuantity] = useState(item.qty || 1);
 
     const action = inCart ? 'X' : 'Add To Cart'
@@ -16,9 +15,14 @@ function Item ({item, inCart}) {
     const handleRemoveItem = (itemId) => {
         removeCartItem(itemId);
 
-        const updatedCart = cartItems.filter(item => item.id !== itemId);
-        setCartItems(updatedCart);
+        document.getElementById('cartTotal').innerText = getCartItemCount()
     };
+
+    const handlerAddToCartItem = (item) => {
+        addItemToCart(item);
+
+        document.getElementById('cartTotal').innerText = getCartItemCount()
+    }
  
     return (
     <div className="item">
@@ -55,12 +59,11 @@ function Item ({item, inCart}) {
                 <p>{item.description}</p>
                 <p>Pages: {item.pageCount}</p>
                 <p>Price: {item.saleInfo.listPrice.amount} {item.saleInfo.listPrice.currencyCode}</p>
-                <button className="addToCartBttn" onClick={() => addItemToCart(item) }>{action}</button>
+                <button className="addToCartBttn" onClick={() => handlerAddToCartItem(item) }>{action}</button>
                 </div>
                 </>
             )
         }
-         
     </div>
     )
 }
