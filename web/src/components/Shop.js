@@ -1,25 +1,23 @@
 import React, {useState, useEffect} from "react";
 import "./style.css"
 import Item from './Item'
-import { addToCart, GOOGLE_BOOKS_URL } from "../api/api";
 
-function Main ({sessionId}) {
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
+
+function Main () {
     const [items, setItems] = useState([]);
-    // const [cartItemCount, setCartItemCount] = useState(0);
-    
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         fetchItems();
     }, [])
 
     const fetchItems = async () => {
         try {
-            const resp = await fetch(`${GOOGLE_BOOKS_URL}/volumes?q=nosql`);
-            if (!resp.ok) {
-                throw new Error('Failed to fetch items')
-            }
-
+            const resp = await fetch(`${BASE_URL}/books`);
             const data = await resp.json();
-            setItems(data.items)
+            setItems(data)
+            setLoading(false);
         } catch (error) {
             console.error('Error fetching items:', error);
         }
@@ -29,11 +27,15 @@ function Main ({sessionId}) {
     <div>
     <div className="main-container ">
     <p className="main-title"><b>Book Results</b></p>
+    {loading ? (
+        <p>Loading...</p>
+            ) : (
         <div className="items">
             {items.map((item) => (
-                <Item item={item} addToCart={addToCart(sessionId, item.id)}/>
+                <Item item={item}/>
             ))}
         </div>
+        )}
     </div>
     </div>)
 }

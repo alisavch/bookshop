@@ -84,7 +84,6 @@
 
 .item:hover {
     transition: 0.2s ease-in;
-    cursor: pointer;
 }
 
 .item-in-cart {
@@ -118,10 +117,14 @@
     width: 100%;
     border: 1px solid black;
     border-radius: 20px;
-    background-color: white;
     text-align: center;
     text-transform: uppercase;
+    cursor: pointer;
 }
+
+button.clicked {
+    background-color: rgb(238, 201, 241);
+  }
 
 .error-message {
     color: red;

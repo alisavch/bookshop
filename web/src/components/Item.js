@@ -1,26 +1,33 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import "./style.css"
+import { addItemToCart, updateCartItemQty, removeCartItem } from '../utils/localStorage';
 
-function Item ({item, addToCart, inCart, updateInCart}) {
-    const [quantity, setQuantity] = useState(item.quantity || 1);
+function Item ({item, inCart}) {
+    const [cartItems, setCartItems] = useState([]);
+    const [quantity, setQuantity] = useState(item.qty || 1);
 
     const action = inCart ? 'X' : 'Add To Cart'
-    const handleAction = inCart ? updateInCart : addToCart;
 
-    const handleUpdateInCart = () => {
-        updateInCart(item.id, quantity);
-      };
+    useEffect(() => {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        setCartItems(cart);
+    }, []);
 
-    console.log(item.saleInfo.listPrice)
+    const handleRemoveItem = (itemId) => {
+        removeCartItem(itemId);
 
+        const updatedCart = cartItems.filter(item => item.id !== itemId);
+        setCartItems(updatedCart);
+    };
+ 
     return (
     <div className="item">
         {
             inCart ? (
                 <>
                 <div className="item-in-cart">
-                <button className="removeFromCartBttn" onClick={() => handleAction(item.id)}>{action}</button>
-                <p className="item-title"><b>{item.volumeInfo.title}</b></p>
+                <button className="removeFromCartBttn" onClick={() => handleRemoveItem(item.id)}>{action}</button>
+                <p className="item-title"><b>{item.title}</b></p>
                 < input
                     className="item-quantity"
                     type="number"
@@ -34,7 +41,7 @@ function Item ({item, addToCart, inCart, updateInCart}) {
                         }
                     }}
                 />    
-                <button onClick={handleUpdateInCart}>Update Quantity</button>        
+                <button onClick={() => updateCartItemQty(item.id, quantity) }>Update Quantity</button>        
                 {isNaN(quantity) || quantity < 1 || quantity > 100 ? (
                     <p className="error-message">Sorry! Number invalid</p>
                 ) : null}
@@ -42,12 +49,13 @@ function Item ({item, addToCart, inCart, updateInCart}) {
                 </>
             ) : (
                 <>
-                <img class="item-image" src={item.volumeInfo.imageLinks.smallThumbnail} alt="" />
+                <img class="item-image" src={item.image} alt="" />
                 <div className="item-content">
-                <p><b>{item.volumeInfo.title}</b></p>
-                <p>{item.volumeInfo.description}</p>
-                <p>Pages: {item.volumeInfo.pageCount}</p>
-                <button className="addToCartBttn" onClick={() => handleAction(item.id)}>{action}</button>
+                <p><b>{item.title}</b></p>
+                <p>{item.description}</p>
+                <p>Pages: {item.pageCount}</p>
+                <p>Price: {item.saleInfo.listPrice.amount} {item.saleInfo.listPrice.currencyCode}</p>
+                <button className="addToCartBttn" onClick={() => addItemToCart(item) }>{action}</button>
                 </div>
                 </>
             )

@@ -1,12 +1,12 @@
 import React from "react";
 import "./style.css"
 
-function Header ({ appName, toggleCart, cartItemCount }) {
+function Header ({ appName, toggleCart, cartItemsCount }) {
     return (
     <div className="header">
         <div className="app-name">{appName}</div>
         <div className="header-cart">
-            <button onClick={toggleCart}>My Cart ({cartItemCount})</button>
+            <button onClick={toggleCart}>My Cart <span id="cartTotal">{cartItemsCount > 0 ? <>({cartItemsCount})</> : null}</span></button>
         </div>
     </div>
     )
