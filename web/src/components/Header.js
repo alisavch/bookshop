@@ -6,7 +6,7 @@ function Header ({ appName, toggleCart, cartItemsCount }) {
     <div className="header">
         <div className="app-name">{appName}</div>
         <div className="header-cart">
-            <button onClick={toggleCart}>My Cart <span id="cartTotal">{cartItemsCount > 0 ? <>{cartItemsCount}</> : null}</span></button>
+            <button data-testid="cart-item-count" onClick={toggleCart}>My Cart <span id="cartTotal">{cartItemsCount > 0 ? <>{cartItemsCount}</> : null}</span></button>
         </div>
     </div>
     )
