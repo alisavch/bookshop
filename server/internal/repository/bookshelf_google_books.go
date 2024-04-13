@@ -8,18 +8,18 @@ import (
 	"github.com/alisavch/bookshop/internal/core/domain"
 )
 
-type BookshelfRepository struct {
+const GoogleBooksAPI = "https://www.googleapis.com/books/v1/volumes?q=nosql"
+
+type BookshelfGoogleBooksRepository struct {
 	baseURL string
 }
 
-func NewBookshelfRepository(baseURL string) *BookshelfRepository {
-	return &BookshelfRepository{baseURL: baseURL}
+func NewBookshelfGoogleBooksRepository() *BookshelfGoogleBooksRepository {
+	return &BookshelfGoogleBooksRepository{baseURL: GoogleBooksAPI}
 }
 
-func (r *BookshelfRepository) GetBooks() ([]domain.Book, error) {
-	url := fmt.Sprintf("%s?q=nosql", r.baseURL)
-
-	response, err := http.Get(url)
+func (r *BookshelfGoogleBooksRepository) GetBooks() ([]domain.Book, error) {
+	response, err := http.Get(r.baseURL)
 	if err != nil {
 		return nil, fmt.Errorf("unable to make HTTP request: %v", err)
 	}
@@ -32,8 +32,4 @@ func (r *BookshelfRepository) GetBooks() ([]domain.Book, error) {
 	}
 
 	return bookshelf.Books, nil
-}
-
-func (r *BookshelfRepository) GetBooksByFilter(param domain.FilterParams) ([]domain.Book, error) {
-	return nil, nil
 }

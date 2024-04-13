@@ -2,10 +2,8 @@ package main
 
 import (
 	"net/http"
-	"os"
 
 	"github.com/gorilla/mux"
-	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 
 	"github.com/alisavch/bookshop/internal/core/service"
@@ -14,13 +12,7 @@ import (
 )
 
 func main() {
-	if err := godotenv.Load(); err != nil {
-		logrus.Fatalf("Error loading .env file: %v", err)
-	}
-
-	booksAPIURL := os.Getenv("GOOGLE_BOOKS_API_URL")
-
-	bookshelfRepo := repository.NewBookshelfRepository(booksAPIURL)
+	bookshelfRepo := repository.NewBookshelfGoogleBooksRepository()
 	bookshopService := service.NewBookshopService(bookshelfRepo)
 
 	handler := handler.NewHandler(bookshopService)

@@ -6,5 +6,4 @@ import (
 
 type BookshelfRepository interface {
 	GetBooks() ([]domain.Book, error)
-	GetBooksByFilter(param domain.FilterParams) ([]domain.Book, error)
 }

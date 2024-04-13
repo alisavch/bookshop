@@ -4,9 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"os"
-
-	"github.com/joho/godotenv"
 
 	"github.com/alisavch/bookshop/internal/core/domain"
 	"github.com/alisavch/bookshop/internal/core/port"
@@ -14,6 +11,7 @@ import (
 )
 
 const (
+	OpenLibraryURL = "https://openlibrary.org"
 	MaturityFilter = "NOT_MATURE"
 	ISBN10         = "ISBN_10"
 	ISBN13         = "ISBN_13"
@@ -23,7 +21,7 @@ type BookshopService struct {
 	bookshopRepo port.BookshelfRepository
 }
 
-var _ port.BookshelfRepository = (*repository.BookshelfRepository)(nil)
+var _ port.BookshelfRepository = (*repository.BookshelfGoogleBooksRepository)(nil)
 
 func NewBookshopService(bookshelfRepo port.BookshelfRepository) *BookshopService {
 	return &BookshopService{
@@ -48,7 +46,6 @@ func (s *BookshopService) GetBooks() ([]domain.DisplayedBook, error) {
 				Description: v.VolumeInfo.Description,
 				PageCount:   v.VolumeInfo.PageCount,
 				SaleInfo:    v.SaleInfo,
-				PreviewLink: v.VolumeInfo.PreviewLink,
 			}
 
 			revision, err := getRevisionNumber(v.VolumeInfo.IndustryIdentifiers)
@@ -75,19 +72,13 @@ func getRevisionNumber(ids []domain.IndustryIdentifiers) (int, error) {
 	var bookInfo OpenLibraryBookInfo
 	var isbn string
 
-	if err := godotenv.Load(); err != nil {
-		return 0, fmt.Errorf("error loading .env file")
-	}
-
 	for _, v := range ids {
 		if v.Type == ISBN10 || v.Type == ISBN13 {
 			isbn = v.Identifier
 		}
 	}
 
-	booksAPIURL := os.Getenv("OPEN_LIBRARY_URL")
-
-	resp, err := http.Get(fmt.Sprintf("%s/%s.json", booksAPIURL, isbn))
+	resp, err := http.Get(fmt.Sprintf("%s/isbn/%s.json", OpenLibraryURL, isbn))
 	if err != nil {
 		return 0, fmt.Errorf("error fetching book info: %v", err)
 	}
@@ -106,9 +97,4 @@ func getRevisionNumber(ids []domain.IndustryIdentifiers) (int, error) {
 	}
 
 	return bookInfo.Revision, nil
-}
-
-func (s *BookshopService) GetBooksByFilter(param domain.FilterParams) ([]domain.DisplayedBook, error) {
-	// call Google Books API and pass ID param
-	return nil, nil
 }
